@@ -34,6 +34,20 @@
                 <configuration>
                     <mainClass>com.brayvasq.server.App</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>server</id>
+                        <configuration>
+                            <mainClass>com.brayvasq.server.App</mainClass>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>client-cli</id>
+                        <configuration>
+                            <mainClass>com.brayvasq.server.Client</mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

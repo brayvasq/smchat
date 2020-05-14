@@ -25,3 +25,16 @@ We establish a mini-protocol to communicate clients and servers. And to identify
 - `USERS` to obtain the list of clients
 - `QUIT` to disconnect a client from a server.
 
+## Run project
+
+```bash
+# Build project
+mvn clean package
+
+# Run server
+mvn exec:java@server
+
+# Run CLI client
+mvn exec:java@client-cli
+```
+
