@@ -54,22 +54,58 @@ java -cp target/server-1.0-SNAPSHOT.jar com.brayvasq.server.App
 # Execute project using maven (the plugin 'exec-maven-plugin' is needed)
 ## you can use the project maven wrapper
 ## For Linux:
-./mvnw clean package
 ./mvnw exec:java -Dexec.args='[command]' -q
 
 ### Run server
+cd server/
+./mvnw clean package
+./mvnw exec:java -Dexec.args='[command]' -q
 ./mvnw exec:java@server
 
 ### Run CLI client
+cd client/
+./mvnw clean package
+./mvnw exec:java -Dexec.args='[command]' -q
 ./mvnw exec:java@client-cli
 
 ## For Windows:
-mvnw.cmd clean package
 mvnw.cmd exec:java -Dexec.args='[command]' -q
 
 ### Run server
+cd server/
+mvnw.cmd clean package
+mvnw.cmd exec:java -Dexec.args='[command]' -q
 mvnw.cmd exec:java@server
 
 ### Run CLI client
+cd client/
+mvnw.cmd clean package
+mvnw.cmd exec:java -Dexec.args='[command]' -q
 mvnw.cmd exec:java@client-cli
 ```
+
+### Usage
+
+```bash
+# Linux
+./mvnw exec:java@client-cli -q
+
+# Windows
+mvnw.cmd exec:java@client-cli -q
+
+The Java Chat - a sockets example
+
+Usage:
+  ./mvnw exec:java -Dexec.args='host port' -q
+
+Available Commands:
+  register <name>       set a name to the connection
+  users                 return the list of connections
+  send all              send a message to all connections (broadcast)
+  send user <name>      send a message to an specific user
+  quit                  kill the connection
+
+Example:
+Use ./mvnw exec:java -Dexec.args='127.0.0.1 25000' -q to stablish a connection
+```
+
