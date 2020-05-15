@@ -35,12 +35,12 @@ Sockets example. It's a simple chat built in Java and with Java swing Client.
 - See the chat history.
 
 ### Protocol
-We establish a mini-protocol to communicate clients and servers. And to identify what type of message the server receives.
-- `register` to add or connect a new client.
-- `send all` to send a message to all clients.
-- `send user` to send a message to a specific client.
-- `users` to obtain the list of clients
-- `quit` to disconnect a client from a server.
+The mini-protocol to communicate clients and servers, and to identify what type of message the server receives, is:
+- `register:` to add or connect a new client.
+- `send all:` to send a message to all clients.
+- `send user:` to send a message to a specific client.
+- `users!` to obtain the list of clients
+- `quit!` to disconnect a client from a server.
 
 ## Run project
 ```bash
@@ -107,5 +107,15 @@ Available Commands:
 
 Example:
 Use ./mvnw exec:java -Dexec.args='127.0.0.1 25000' -q to stablish a connection
+```
+
+```bash
+# Commands in the REPL
+# ./mvnw exec:java@client-cli -Dexec.args='127.0.0.1 25000' -q
+register: pepe
+send all: message to send
+send username: message to send
+users!
+quit!
 ```
 

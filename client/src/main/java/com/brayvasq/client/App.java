@@ -15,12 +15,13 @@ public class App {
             String host = args[0];
             int port = Integer.parseInt(args[1]);
 
-            ClientService client = new ClientService(host, port, "Example");
+            ClientService client = new ClientService(host, port, "example");
 
             Scanner sc = new Scanner(System.in);
             String message = sc.nextLine();
-            while (message.toLowerCase() != "quit") {
+            while (!"quit!".equals(message.toLowerCase())) {
                 client.send(message);
+                message = sc.nextLine();
             }
         } else {
             System.out.println("Error: Please specify a port and host");
@@ -31,7 +32,7 @@ public class App {
             System.out.println("");
             System.out.println("Available Commands:");
             System.out.println("  register <name>       set a name to the connection");
-            System.out.println("  users                 return the list of connections"); 
+            System.out.println("  users                 return the list of connections");
             System.out.println("  send all              send a message to all connections (broadcast)");
             System.out.println("  send user <name>      send a message to an specific user");
             System.out.println("  quit                  kill the connection");

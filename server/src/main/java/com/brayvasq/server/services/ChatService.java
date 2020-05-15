@@ -12,7 +12,7 @@ import java.util.LinkedList;
 
 /**
  * The Chat server. It executes all chat actions.
- * 
+ *
  * @author brayvasq
  */
 public class ChatService {
@@ -24,7 +24,7 @@ public class ChatService {
 
     /**
      * Class constructor
-     * 
+     *
      * @param port the port used to start the application and listen
      * @param name the Chat name
      */
@@ -36,7 +36,7 @@ public class ChatService {
 
     /**
      * Sends a message to all clients, like a broadcast
-     * 
+     *
      * @param message the messsage to be sended
      */
     public void writeMessage(String message) {
@@ -47,13 +47,13 @@ public class ChatService {
 
     /**
      * Sends a message to an specific client
-     * 
+     *
      * @param message the message to be sended
      * @param name the client name to send the message
      */
     public void writeSpecific(String message, String name) {
         for (SocketService sc : this.clients) {
-            if (sc.getName().toUpperCase().equals(name)) {
+            if (sc.getName().toLowerCase().equals(name)) {
                 sc.writeMessage(message);
             }
         }
@@ -61,9 +61,9 @@ public class ChatService {
 
     /**
      * Verifies if an names is used by another client
-     * 
+     *
      * @param name the name to check is used
-     * 
+     *
      * @return false if the name is available
      */
     public boolean exists(String name) {
@@ -78,7 +78,7 @@ public class ChatService {
 
     /**
      * Method used to set a connection name
-     * 
+     *
      * @param s is the channel stablished for the client
      * @param name is the client name
      */
@@ -88,7 +88,8 @@ public class ChatService {
                 if (sc.equals(s)) {
                     if (!exists(name)) {
                         sc.setName(name);
-                        System.out.println(name+" is joined!");
+                        System.out.println("Joined: " + name);
+                        this.writeMessage("Joined: " + name);
                     } else {
                         s.writeMessage("Error: The name " + name + " exists in the chat, please choose others");
                     }
@@ -101,11 +102,11 @@ public class ChatService {
 
     /**
      * Return all the users names into a string
-     * 
+     *
      * @return a string with all users names separated by '-'
      */
     public String users() {
-        String cadena = "USR NMS ";
+        String cadena = "users: ";
 
         for (SocketService sc : this.clients) {
             System.out.println(sc.getName());

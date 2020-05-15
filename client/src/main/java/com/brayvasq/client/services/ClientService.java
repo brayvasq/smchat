@@ -14,8 +14,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComboBox;
-import javax.swing.JTextArea;
 
 /**
  * Service used to connect to a chat server
@@ -58,24 +56,32 @@ public class ClientService {
         }
     }
     
+    /**
+     * This method sends and linsten for messages between the client and the server.
+     * 
+     * @param message the message to send
+     */
     public void send(String message) {
         dataOut.println(message);
-        Thread t = new Thread(() -> {
-            String cad = "resp";
-            String men = "hola mundo\n";
+        
+        new Thread(() -> {
+            String cad = "response:";
+
             while (!(cad.equals("") && cad.equals(null))) {
                 try {
                     cad = dataIn.readLine();
-                    System.out.println("" + cad);
-                    if (cad.toUpperCase().startsWith("users ")) {
-                        cad = cad.substring(8);
+                    if (cad.toLowerCase().startsWith("users: ")) {
+                        cad = cad.substring(7);
+                        
                         String[] names = cad.split("-");
+                        int counter = 1;
                         for (String s : names) {
-                            System.out.println(s);
+                            System.out.println(counter + ". "+s);
+                            counter++;
                         }
-                    } else if (cad.toUpperCase().startsWith("response ")) {
-                        cad = cad.substring(9);
-                        System.out.println("" + cad + " dice : ");
+                    } else if (cad.toLowerCase().startsWith("response: ")) {
+                        cad = cad.substring(10);
+                        System.out.print(cad + ": ");
                     } else {
                         System.out.println(cad + "\n");
                     }
@@ -84,7 +90,20 @@ public class ClientService {
                     Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        });
-        t.start();
+        }).start();
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }

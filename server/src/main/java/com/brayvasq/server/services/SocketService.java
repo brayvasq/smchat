@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 /**
  * Class used to stablish an specific channel for a client
- * 
+ *
  * @author brayvasq
  */
 public class SocketService implements Runnable {
@@ -54,9 +54,8 @@ public class SocketService implements Runnable {
     }
 
     /**
-     * Close the streams and channels that are open
-     * It should be used when a client stop working or when 
-     * a client leaves the app.
+     * Close the streams and channels that are open It should be used when a
+     * client stop working or when a client leaves the app.
      */
     public void close() {
         try {
@@ -70,7 +69,7 @@ public class SocketService implements Runnable {
 
     /**
      * Write messages in the Output Stream channel
-     * 
+     *
      * @param message the message to be written
      */
     public void writeMessage(String message) {
@@ -80,7 +79,7 @@ public class SocketService implements Runnable {
 
     /**
      * Reads messages from the Input Stream
-     * 
+     *
      * @return the message read
      */
     public String readMessage() {
@@ -96,9 +95,9 @@ public class SocketService implements Runnable {
     }
 
     /**
-     * run(). Listen from input stream, identify the specific action to execute 
+     * run(). Listen from input stream, identify the specific action to execute
      * and call the respective action..
-     * 
+     *
      */
     @Override
     public void run() {
@@ -107,39 +106,41 @@ public class SocketService implements Runnable {
         this.writeMessage(this.name);
         this.writeMessage("Session Id: " + this.id);
 
-        while (!readline.trim().equalsIgnoreCase("quit")) {
-            readline = readMessage();
+        try {
+            while (!readline.trim().equalsIgnoreCase("quit!")) {
 
-            if(readline.trim().toLowerCase().startsWith("register ")){
-                readline = readline.substring(9);
-                
-                this.chat.register(this, readline);
-            }
-            else if (readline.trim().toLowerCase().startsWith("send all ")) {
-                readline = readline.substring(9);
-                this.chat.writeMessage("response "+this.name);
-                this.chat.writeMessage(readline);
-            }else if(readline.trim().toLowerCase().startsWith("send user ")){
-                try{
+                readline = readMessage();
+
+                if (readline.trim().toLowerCase().startsWith("register: ")) {
                     readline = readline.substring(10);
-                    String str[] = readline.split("-");
-                    this.chat.writeSpecific("response "+ this.name , str[0].toUpperCase());
-                    System.out.println("response " + this.name + " : " +str[0].toUpperCase());
-                    this.chat.writeSpecific(str[1], str[0].trim().toUpperCase());
-                }catch(NullPointerException ex){
-                    System.out.println("Error: An error ocurred trying to send a message");
-                }
-            }
-            else if (readline.trim().toUpperCase().equals("USERS")){
-                String users = this.chat.users();
-                System.out.println(users);
-                this.chat.writeMessage(users);
-            }
-            else if(!readline.equals("quit")){
-                writeMessage("Error: Invalid Command");
-            }
-        }
 
+                    this.chat.register(this, readline);
+                } else if (readline.trim().toLowerCase().startsWith("send all: ")) {
+                    readline = readline.substring(10);
+                    this.chat.writeMessage("response: " + this.name);
+                    this.chat.writeMessage(readline);
+                } else if (readline.trim().toLowerCase().startsWith("send ")) {
+                    try {
+                        readline = readline.substring(5);
+                        String str[] = readline.split(":");
+                        this.chat.writeSpecific("response: " + this.name, str[0].toLowerCase());
+                        System.out.println("response: " + this.name + " : " + str[0].toLowerCase());
+                        this.chat.writeSpecific(str[1], str[0].trim().toLowerCase());
+                    } catch (NullPointerException ex) {
+                        System.out.println("Error: An error ocurred trying to send a message");
+                    }
+                } else if (readline.trim().toLowerCase().equals("users!")) {
+                    String users = this.chat.users();
+                    System.out.println(users);
+                    this.chat.writeSpecific(users, this.getName());
+                } else if (!readline.equals("quit!")) {
+                    writeMessage("Error: Invalid Command");
+                }
+
+            }
+        } catch (NullPointerException ex) {
+            this.writeMessage("Error: Connection losed for " + this.name);
+        }
         close();
     }
 
