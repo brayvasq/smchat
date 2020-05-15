@@ -68,6 +68,11 @@ cd client/
 ./mvnw exec:java -Dexec.args='[command]' -q
 ./mvnw exec:java@client-cli
 
+### Run GUI client
+./mvnw clean package
+./mvnw exec:java -Dexec.args='[command]' -q
+./mvnw exec:java@gui
+
 ## For Windows:
 mvnw.cmd exec:java -Dexec.args='[command]' -q
 
@@ -82,6 +87,11 @@ cd client/
 mvnw.cmd clean package
 mvnw.cmd exec:java -Dexec.args='[command]' -q
 mvnw.cmd exec:java@client-cli
+
+### Run GUI client
+mvnw.cmd clean package
+mvnw.cmd exec:java -Dexec.args='[command]' -q
+mvnw.cmd exec:java@gui
 ```
 
 ### Usage
@@ -118,4 +128,3 @@ send username: message to send
 users!
 quit!
 ```
-
