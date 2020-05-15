@@ -2,10 +2,27 @@
 Sockets example. It's a simple chat built in Java and with Java swing Client.
 
 - `Chat/`: Folder that contains the chat server and a CLI client.
-    -  The CLI client uses JOptionPane to ask for a message.
+  -  The CLI client uses JOptionPane to ask for a message.
 - `ClienteSwing/`: Folder that contains the Java Swing GUI client.
 
 **Note**: To run the projects, you should use an IDE (like Netbeans or IntelliJ). However, you can run it using Ant, or compiling and running it manually using `javac` and `java`.
+
+| Lenguaje | Versión              | SO             |
+| -------- | -------------------- | -------------- |
+| Java     | Java version: 11.0.6 | Ubuntu 18.04.1 |
+
+## Documentation
+
+| Type                       | Link                                                         |
+| -------------------------- | ------------------------------------------------------------ |
+| Learn Java                 | https://www.learnjavaonline.org/                             |
+| Official Docs              | https://docs.oracle.com/en/java/                             |
+| Install Maven              | https://linuxize.com/post/how-to-install-apache-maven-on-ubuntu-18-04/ |
+| Install Maven              | https://www.vogella.com/tutorials/ApacheMaven/article.html   |
+| Example                    | https://mkyong.com/maven/how-to-create-a-java-project-with-maven/ |
+| StyleGuide                 | https://www.oracle.com/technetwork/java/codeconventions-135099.html |
+| Run multiple classes maven | https://stackoverflow.com/questions/51504549/run-multiple-classes-using-maven |
+| Tutorial                   | https://www.codejava.net/java-se/networking/how-to-create-a-chat-console-application-in-java-using-socket |
 
 ### Current features
 - Run a local chat server.
@@ -19,22 +36,40 @@ Sockets example. It's a simple chat built in Java and with Java swing Client.
 
 ### Protocol
 We establish a mini-protocol to communicate clients and servers. And to identify what type of message the server receives.
-- `REGISTER` to add or connect a new client.
-- `SEND ALL` to send a message to all clients.
-- `SEND USER` to send a message to a specific client.
-- `USERS` to obtain the list of clients
-- `QUIT` to disconnect a client from a server.
+- `register` to add or connect a new client.
+- `send all` to send a message to all clients.
+- `send user` to send a message to a specific client.
+- `users` to obtain the list of clients
+- `quit` to disconnect a client from a server.
 
 ## Run project
-
 ```bash
-# Build project
+# Compile and create a .jar
 mvn clean package
+mvn exec:java
 
-# Run server
-mvn exec:java@server
+# Execute project
+java -cp target/server-1.0-SNAPSHOT.jar com.brayvasq.server.App
 
-# Run CLI client
-mvn exec:java@client-cli
+# Execute project using maven (the plugin 'exec-maven-plugin' is needed)
+## you can use the project maven wrapper
+## For Linux:
+./mvnw clean package
+./mvnw exec:java -Dexec.args='[command]' -q
+
+### Run server
+./mvnw exec:java@server
+
+### Run CLI client
+./mvnw exec:java@client-cli
+
+## For Windows:
+mvnw.cmd clean package
+mvnw.cmd exec:java -Dexec.args='[command]' -q
+
+### Run server
+mvnw.cmd exec:java@server
+
+### Run CLI client
+mvnw.cmd exec:java@client-cli
 ```
-

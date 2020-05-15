@@ -35,7 +35,7 @@ public class Client {
             bufferOut = channel.getOutputStream();
             data = new DataOutputStream(bufferOut);
             
-            dataOut = new PrintWriter(bufferOut,true);
+            dataOut = new PrintWriter(bufferOut, true);
             dataIn = new BufferedReader(new InputStreamReader(channel.getInputStream(),"UTF-8"));
             
             String mensaje = "Hello world!\n";
@@ -44,8 +44,8 @@ public class Client {
             Scanner sc = new Scanner(System.in);
             while(mensaje.toUpperCase() != "QUIT"){
                 dato = dataIn.readLine();
-                System.out.println(""+dato);
-                mensaje = sc.next();
+                System.out.println(dato);
+                mensaje = sc.nextLine();
                 dataOut.println(mensaje);
             }
             

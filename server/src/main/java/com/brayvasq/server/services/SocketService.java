@@ -11,12 +11,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
 
 /**
- *
+ * Class used to stablish an specific channel for a client
+ * 
  * @author brayvasq
  */
 public class SocketService implements Runnable {
+
     private ChatService chat = null;
     private int id = 0;
     private String name = "";
@@ -25,6 +28,14 @@ public class SocketService implements Runnable {
     private PrintWriter out = null;
     private BufferedReader in = null;
 
+    /**
+     * Class constructor
+     *
+     * @param socket The channel to stablish a connection
+     * @param name The name of the channel
+     * @param id The session Id
+     * @param chat The server that process the actions
+     */
     public SocketService(Socket socket, String name, int id, ChatService chat) {
         this.chat = chat;
         this.id = id;
@@ -42,6 +53,11 @@ public class SocketService implements Runnable {
         this.thread.start();
     }
 
+    /**
+     * Close the streams and channels that are open
+     * It should be used when a client stop working or when 
+     * a client leaves the app.
+     */
     public void close() {
         try {
             this.out.close();
@@ -52,11 +68,21 @@ public class SocketService implements Runnable {
         }
     }
 
+    /**
+     * Write messages in the Output Stream channel
+     * 
+     * @param message the message to be written
+     */
     public void writeMessage(String message) {
         this.out.println(message);
-        System.out.println(message);
+        // System.out.println(message);
     }
 
+    /**
+     * Reads messages from the Input Stream
+     * 
+     * @return the message read
+     */
     public String readMessage() {
         String readline = "";
 
@@ -69,44 +95,51 @@ public class SocketService implements Runnable {
         return readline;
     }
 
+    /**
+     * run(). Listen from input stream, identify the specific action to execute 
+     * and call the respective action..
+     * 
+     */
     @Override
     public void run() {
         String readline = "";
 
-        writeMessage(this.name);
-        writeMessage("Session Id: " + this.id);
+        this.writeMessage(this.name);
+        this.writeMessage("Session Id: " + this.id);
 
-        while (!readline.trim().equalsIgnoreCase("QUIT")) {
+        while (!readline.trim().equalsIgnoreCase("quit")) {
             readline = readMessage();
 
-            System.out.println("Session: " + this.id + " Command: " + readline);
-
-            if (readline.trim().toUpperCase().startsWith("REGISTER ")) {
+            if(readline.trim().toLowerCase().startsWith("register ")){
                 readline = readline.substring(9);
+                
                 this.chat.register(this, readline);
-            } else if (readline.trim().toUpperCase().startsWith("SEND ALL ")) {
+            }
+            else if (readline.trim().toLowerCase().startsWith("send all ")) {
                 readline = readline.substring(9);
-                this.chat.writeMessage("NMS RESP " + this.name);
+                this.chat.writeMessage("response "+this.name);
                 this.chat.writeMessage(readline);
-            } else if (readline.trim().toUpperCase().startsWith("SEND USER ")) {
-                try {
+            }else if(readline.trim().toLowerCase().startsWith("send user ")){
+                try{
                     readline = readline.substring(10);
-                    String strings[] = readline.split("-");
-                    this.chat.writeSpecific("NMS RESP " + this.name, strings[0].toUpperCase());
-                    System.out.println("NMS RESP " + this.name + " : " + strings[0].toUpperCase());
-                    this.chat.writeSpecific(strings[1], strings[0].trim().toUpperCase());
-                } catch (NullPointerException ex) {
-                    System.out.println("Error: An error occurs trying to send a message");
+                    String str[] = readline.split("-");
+                    this.chat.writeSpecific("response "+ this.name , str[0].toUpperCase());
+                    System.out.println("response " + this.name + " : " +str[0].toUpperCase());
+                    this.chat.writeSpecific(str[1], str[0].trim().toUpperCase());
+                }catch(NullPointerException ex){
+                    System.out.println("Error: An error ocurred trying to send a message");
                 }
-            } else if (readline.trim().toUpperCase().equals("USERS")) {
-                String cadena = this.chat.users();
-                System.out.println(cadena);
-                this.chat.writeMessage(cadena);
-            } else if (!readline.equals("QUIT")) {
-                writeMessage("Error: Invalid command!!");
+            }
+            else if (readline.trim().toUpperCase().equals("USERS")){
+                String users = this.chat.users();
+                System.out.println(users);
+                this.chat.writeMessage(users);
+            }
+            else if(!readline.equals("quit")){
+                writeMessage("Error: Invalid Command");
             }
         }
-        
+
         close();
     }
 
