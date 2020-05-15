@@ -23,6 +23,7 @@ Sockets example. It's a simple chat built in Java and with Java swing Client.
 | StyleGuide                 | https://www.oracle.com/technetwork/java/codeconventions-135099.html |
 | Run multiple classes maven | https://stackoverflow.com/questions/51504549/run-multiple-classes-using-maven |
 | Tutorial                   | https://www.codejava.net/java-se/networking/how-to-create-a-chat-console-application-in-java-using-socket |
+| Swing layout               | https://www.geeksforgeeks.org/java-swing-simple-user-registration-form/ |
 
 ### Current features
 - Run a local chat server.
