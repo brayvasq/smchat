@@ -15,7 +15,7 @@ public class App {
             String host = args[0];
             int port = Integer.parseInt(args[1]);
 
-            ClientService client = new ClientService(host, port, "example");
+            ClientService client = new ClientService(host, port, "example", false);
 
             Scanner sc = new Scanner(System.in);
             String message = sc.nextLine();

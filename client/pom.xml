@@ -40,6 +40,12 @@
                             <mainClass>com.brayvasq.client.App</mainClass>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>gui</id>
+                        <configuration>
+                            <mainClass>com.brayvasq.client.Frame</mainClass>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
